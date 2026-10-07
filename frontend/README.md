@@ -58,6 +58,7 @@ frontend/
 
 ## Design Decisions
 - **Monolithic fullstack**: Next.js API routes instead of separate Express backend — simpler deployment, shared types, better DX
+- **Role-based App Router structure**: Segregated role paths into `app/patient/`, `app/doctor/`, and `app/admin/` to avoid parallel path collisions in Next.js App Router (each group had identical `/dashboard` and `/queue` URLs), matching middleware route protection and clear role separation.
 - **Tailwind v4**: Using CSS-first config with `@tailwindcss/postcss` 
 - **JWT sessions**: Stateless auth for scalability, 24h expiry
 - **Optimistic concurrency**: Queue claims use version-based CAS to prevent double-assignment

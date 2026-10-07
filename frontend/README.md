@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MediQueue — Intelligent Hospital Queue & Patient History System
 
-## Getting Started
+## Overview
+MediQueue is a full-stack intelligent hospital queue management system built as a final-year CSE project. It features priority-based queue scheduling with aging fairness, real-time tracking, comprehensive patient history, and analytics dashboards for three user roles: Patient, Doctor, and Admin.
 
-First, run the development server:
+## Tech Stack
+- **Frontend**: Next.js 15 (App Router) + TypeScript + Tailwind CSS v4 + shadcn/ui
+- **Backend**: Next.js API Routes
+- **Database**: MongoDB (Mongoose ODM)
+- **Auth**: NextAuth.js v5 (Credentials + JWT)
+- **UI Design**: Stitch MCP generated designs
+- **Charts**: Recharts
+- **File Upload**: Cloudinary
+- **Rate Limiting**: Upstash Redis
+- **Testing**: Vitest
+- **Simulation**: Python + SimPy
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Project Structure
+```
+frontend/
+├── app/
+│   ├── (auth)/          # Login, Register
+│   ├── (patient)/       # Patient dashboard, queue, history, reports
+│   ├── (doctor)/        # Doctor dashboard, patient detail, consultation
+│   ├── (admin)/         # Admin dashboard, analytics, doctors, departments
+│   └── api/             # REST API routes
+├── components/
+│   ├── ui/              # shadcn/ui components
+│   ├── queue/           # Queue-specific components
+│   ├── charts/          # Chart components
+│   ├── layout/          # Sidebar, Topbar, PageHeader
+│   └── common/          # KpiCard, EmptyState, LoadingSkeleton
+├── lib/
+│   ├── db/models/       # Mongoose models
+│   ├── services/        # Business logic (queue engine, etc.)
+│   ├── auth/            # NextAuth config + RBAC
+│   ├── validators/      # Zod schemas
+│   └── utils/           # Utilities (cn, fetcher, etc.)
+├── design/stitch/       # Stitch MCP screen exports
+├── scripts/             # Seed, utilities
+├── simulator/           # Python SimPy simulator
+└── tests/               # Vitest tests
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
+1. Clone the repo
+2. Copy `.env.example` to `.env.local` and fill in values
+3. `cd frontend && npm install`
+4. `npm run seed` — populate demo data
+5. `npm run dev` — start development server at http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Demo Credentials
+| Role    | Email                   | Password    |
+|---------|-------------------------|-------------|
+| Admin   | admin@hospital.test     | Admin@123   |
+| Doctor  | cardio@hospital.test    | Doctor@123  |
+| Patient | patient1@hospital.test  | Patient@123 |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Design Decisions
+- **Monolithic fullstack**: Next.js API routes instead of separate Express backend — simpler deployment, shared types, better DX
+- **Tailwind v4**: Using CSS-first config with `@tailwindcss/postcss` 
+- **JWT sessions**: Stateless auth for scalability, 24h expiry
+- **Optimistic concurrency**: Queue claims use version-based CAS to prevent double-assignment
+- **Aging fairness**: P3 patients waiting 100+ minutes can outrank fresh P1 entries
 
-## Learn More
+## Phases
+- [x] Phase 0: Project Setup
+- [ ] Phase 1: Stitch MCP UI Generation
+- [ ] Phase 2: Convert Stitch → Next.js Components
+- [ ] Phase 3: Database Layer
+- [ ] Phase 4: Authentication & RBAC
+- [ ] Phase 5: Core Services (Queue Engine)
+- [ ] Phase 6: API Routes
+- [ ] Phase 7: Wire UI to Backend
+- [ ] Phase 8: Polish & Security
+- [ ] Phase 9: Simulator & Evaluation
+- [ ] Phase 10: Final Verification
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+Academic project — not licensed for production use.
